@@ -1,3 +1,7 @@
+.main {
+    overflow: hidden;/*giải quyết tình trạng bị lòi ra khúc dư thừa*/
+}
+
 /* Header navbar */
 .header {
     height: var(--header-height);
@@ -141,7 +145,7 @@
 .header__navbar-item--separator {
     /* Thêm dấu gạch | giữa các thuộc tính */
     border-right: 1px solid hsla(0, 0%, 100%, 0.4);
-    height: 0.8125rem;
+    height: 90%;
 }
 /* Icon */
 .header__navbar-icon-link {
@@ -481,11 +485,48 @@
 
 
 /* Header with search */
+.header__search-checkbox:checked ~ .header__search {
+    display: flex;
+}
+
+.header__navbar-checkbox:checked ~ .header__navbar-mobile-container {
+    display: block;
+}
+
 .header-with-search {
     height: var(--header-with-search-height);
     display: flex;
     align-items: center;
     margin: 0 8px;
+}
+
+.header__mobile-icon {
+    display: flex;
+    margin-right: 30px;
+}
+
+.header__mobile-menu {
+    margin-left: 2px;
+}
+
+.header__mobile-menu {
+    display: none;
+}
+
+.header__mobile-search {
+    padding: 0 12px;
+    display: none;
+    margin-left: 18px;
+}
+
+.header__mobile-menu-icon,
+.header__mobile-search-icon {
+    font-size: 2.4rem;
+    color: var(--white-color);
+}
+
+.header__mobile-menu {
+
 }
 
 .header__logo {
@@ -690,6 +731,8 @@
     display: inline-block;
     padding: 5px 10px;
     cursor: pointer;
+    /* bỏ đi màu khi nhấn giữ vào */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .header__cart-wrap:hover .header__cart-list {
@@ -782,7 +825,7 @@
 .header__cart-list-item {
     padding-left: 0;
     list-style: none;
-    height: 56vh; /*56% chiều cao màn hình khi màn hình bị thu nhỏ*/
+    max-height: 56vh; /*56% chiều cao màn hình khi màn hình bị thu nhỏ*/
     overflow-y: auto; /*Nếu nhiều sản phẩm quá thì sẽ sroll, dùng y do nó chỉ kéo lên xuống k kéo qua trái phải*/
 }
 
@@ -880,6 +923,54 @@
     background-color: #f05d41;
 }
 
+/* Header sort bar */
+.header__sort-bar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    height: var(--header__sort-bar-height);
+    background-color: var(--white-color);
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    display: none;
+}
+ .header__sort-item {
+    flex: 1; /*Cho 4 item flex 1 để chiếm hết chiều ngang*/
+ } 
+.header__sort-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.4rem;
+    display: block;
+    height: 100%;
+    line-height: var(--header__sort-bar-height);
+    text-align: center;
+    position: relative;
+} 
+
+.header__sort-link::before {
+    content: "";
+    position: absolute;
+    top: 50%;/* dịch 50% thằng chứa nó*/
+    transform: translateY(-50%);/*dịch lên lại 50% chính nó, kết hợp vs top ta căn giữa*/
+    left: 0;
+    height: 60%;
+    border-left: 1px solid #e5e5e5;
+    
+}
+
+.header__sort-item--active .header__sort-link {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.header__sort-item:first-child .header__sort-link::before {
+    display: none;
+}
 
 /* body */
 .app__container {
@@ -1250,6 +1341,7 @@ i.home-product-item__like-icon-fill {
 /* Phân trang */
 .home-product__pagination {
     margin: 48px 0 32px;
+    padding-left: 0;
 }
 
 
@@ -1333,3 +1425,116 @@ i.home-product-item__like-icon-fill {
 
 
 /* END footer */
+
+
+/* Mobile Category */
+.mobile-category {
+    display: none;
+}
+
+.mobile-category__list {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    max-width: 100%;
+    overflow-x: auto;/*Khi đối tượng con vượt quá đối tượng chứa nó thì sẽ tạo ra thanh scroll để kéo*/
+}
+
+/* ẩn thanh scroll bar trên mobile category */
+.mobile-category__list::-webkit-scrollbar {
+    display: none;
+}
+
+.mobile-category__item {
+    flex-shrink: 0;/*Do đối tượng sẽ tự động thu nhỏ nếu có số lượng nhiều, nên dùng flex-shrink này để bỏ tự động thu nhỏ*/
+    margin-right: 10px;
+}
+
+/* 3n là lấy ra 3 thằng con thành 1 nhóm, 3n+1 là từ 3 thằng con lấy ra set color vào thằng kế +1*/
+/* do 3 là max nên 3n + 1 sẽ set thằng con đầu tiền của nhóm tiếp theo */
+.mobile-category__item:nth-of-type(3n + 1) .mobile-category__link {
+    background-color: #87AFD8;
+}
+/* thằng con thứ 2 trong nhóm kế */
+.mobile-category__item:nth-of-type(3n + 2) .mobile-category__link {
+    background-color: #76C9BD;
+}
+
+.mobile-category__item:nth-of-type(3n + 3) .mobile-category__link {
+    background-color: #88CF81;
+}
+
+.mobile-category__link {
+    --line-height: 2rem;
+    text-decoration: none;
+    color: var(--white-color);
+    font-size: 1.4rem;
+    text-align: center;
+    width: 110px;
+    display: block;
+    border-radius: 4px;
+    font-weight: 300;
+    padding: 0 6px;
+
+    line-height: var(--line-height);
+    /* Nếu chữ vướt quá height thì thành ... */
+    height: calc(var(--line-height) * 2);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    /* Bỏ select chữ khi nhấn vào nút */
+    user-select: none;
+    -webkit-user-select: none;
+    /* Bỏ màu khi nhấn giữ vào */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.header__navbar-mobile-list {
+    margin: 0;
+    list-style: none;
+    padding-left: 0;
+    box-shadow: 0 1px 2px  rgba(0, 0, 0, .1);
+}
+
+.header__navbar-mobile-item {
+    padding: 18px 14px;
+    border-bottom: 2px solid rgba(0, 0, 0, .1);
+}
+
+.header__navbar-mobile-link {
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+.header__navbar-mobile-container {
+    display: none;
+    position: absolute;
+    background-color: var(--white-color);
+    z-index: 1;
+    top: var(--header-height);
+    left: 0;
+    width: 70vw;
+    height: auto;
+    
+    animation: mobileNavbarSideIn linear 0.4s;
+}
+
+@keyframes mobileNavbarSideIn {
+    from {
+        opacity: 0;
+        left: -50%;
+    }
+    to {
+        opacity: 1;
+        left: 0;
+    }
+}
+
+.header__navbar-mobile-item--active .header__navbar-mobile-link {
+    color: var(--primary-color);
+
+}
